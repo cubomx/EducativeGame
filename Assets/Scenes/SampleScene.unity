@@ -421,6 +421,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 95b52a23281c74348a3055595fae112e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  level: 1
   variableName: index
   printMessage: cout << index;
   text: {fileID: 886102123}

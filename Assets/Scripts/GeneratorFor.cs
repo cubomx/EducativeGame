@@ -1,4 +1,7 @@
-public class GeneratorFor{
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+public abstract class GeneratorFor{
 
         private int initialValue;
 
@@ -14,16 +17,15 @@ public class GeneratorFor{
 
         private int incrementOut;
 
-        public GeneratorFor(int initialV, int initialF, int max, int count, int increm, int incremOut){
-            this.InitialValue = initialV;
-            this.InitialFor = initialF;
-            this.Maxium = max;
-            this.Counter = count;
-            this.Increment = increm;
-            this.IncrementOut = incremOut;
+        private int type_;
+
+        public GeneratorFor(int type_){
+            this.Type_ = type_;
         }
 
         public abstract int getResult();
+
+        public abstract string generateFor(string variableName, string printMessage);
 
     public int InitialValue { get => initialValue; set => initialValue = value; }
     public int InitialFor { get => initialFor; set => initialFor = value; }
@@ -32,29 +34,8 @@ public class GeneratorFor{
     public int Result { get => result; set => result = value; }
     public int Increment { get => increment; set => increment = value; }
     public int IncrementOut { get => incrementOut; set => incrementOut = value; }
+    public int Type_ { get => type_; set => type_ = value; }
 }
 
-public class Level1: GeneratorFor{
-    public Level1(int initialV, int initialF, int max, int count, int increm, int incremOut) => super(initialV, initialF, max, count, increm, incremOut);
 
-    public int getResult(){
-        int result = this.InitialValue;
-        for (int index = this.InitialFor; index < this.Maxium; index += this.Counter){
-            
-        }
-    }
-}
 
-public class Answers{
-    private int correct;
-    private int[] incorrect;
-
-    public int[] Incorrect { get => incorrect; set => incorrect = value; }
-    public int Correct { get => correct; set => correct = value; }
-
-    public Answers(int correct) => this.Correct = correct;
-
-    public getOtherOptions(){
-        int random = Mathf
-    }
-}

@@ -8,7 +8,7 @@ using UnityEngine.UI;
 
 public class ForGenerator : MonoBehaviour
 {
-    
+    public int level;
     private string question;
     public string variableName;
     public string printMessage;
@@ -17,13 +17,13 @@ public class ForGenerator : MonoBehaviour
     private Timer timer;
     public int timeTo;
     public GameObject gO;
+
+    private GeneratorFor for_;
     
     // Start is called before the first frame update
     void Start()
     {
-        hola h;
-        h.nombre = 2;
-        generateFor();
+        generateLevel();
         timer = gO.AddComponent<Timer>();
         timer.timer = time;
         timer.timeTo = timeTo;
@@ -34,36 +34,19 @@ public class ForGenerator : MonoBehaviour
     {
         if (timer.timeTo == 0)
         {
-              generateFor();
+            generateLevel();
         }
         
     }
 
-    void generateFor(){
-        int counter = (int) Mathf.Ceil(Random.Range(0f, 5f));
-            int start = (int)Mathf.Ceil(Random.Range(0f, 5f));
-            int maxium = (int)Mathf.Ceil(Random.Range(3.0f, 10.0f));
-            int ifClause = (int)Mathf.Ceil(Random.Range(0.0f, 7.0f));
-            this.question = "int " + this.variableName + " = " + start + ";\n";
-            this.question += "for (int i = 0; i < " + maxium + " i+=" + counter + "){\n";
-            this.question += "\t\t" + this.variableName + " += 1\n";
-            if (ifClause >= 4)
-            {
-                this.question += "\t\tif (i % 3 == 0){\n\t\t\t" + this.variableName + " =0\n\t\t}\n";
-            }
-            else
-            {
-                this.question += "\t\tif (i % 2 == 0){\n\t\t\t" + this.variableName + "+=1\n\t\t}\n";
-            }
-            this.question += "\t}\n" + printMessage;
-            
-            text.text = this.question;
+    void generateLevel(){
+        if (level == 1){
+            for_ = (GeneratorFor) new Level1(1);
+        }
+        else if (level == 2){
+            for_ = (GeneratorFor) new Level2(1);
+        }
+        text.text = for_.generateFor(this.variableName, this.printMessage);
     }
-
-
-    int getValueAtEnd(){
-
-    }
-
 
 }
