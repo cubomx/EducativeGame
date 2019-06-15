@@ -1,5 +1,4 @@
 ﻿using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -20,12 +19,13 @@ public class Timer : MonoBehaviour
     void Update()
     {
         timer.text = this.timeTo.ToString();
-        if (timeTo == 0){
+        if (timeTo == 0){ //Restarting the clock to the initial countdown
             timeTo = totalTime;
         }
     }
 
     IEnumerator CountDown(){
+        //Substracts one per second
         while (true){
             yield return new WaitForSeconds(1.0f);
             timeTo--;

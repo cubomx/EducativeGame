@@ -9,36 +9,40 @@ public class Level1: GeneratorFor{
     public Level1(int type_) : base(type_){
 
     }
-
-    public override int getResult(){
+    /* Get the result of case that was selected aleatory */
+    public override List<int> getResult(){
+        List<int> result = new List<int>();
         if (this.Type_ == 1){
-            int result = this.InitialValue;
+            int res = this.InitialValue;
             for (int index = this.InitialFor; index < this.Maxium; index += this.Counter){
-                result += this.Increment;
+                res += this.Increment;
             }
-            result += this.IncrementOut;
-            return result;
+            res += this.IncrementOut;
+            result.Add(res);
         }
         else if (this.Type_ == 2){
-            int result = this.InitialValue;
+            int res = this.InitialValue;
             for (int index = this.InitialFor; index < this.Maxium; index += this.Counter){
-                result = 0;
-                result = result + this.Increment;
+                res = 0;
+                res = res + this.Increment;
             }
-            result += this.IncrementOut;
-            return result;
+            res += this.IncrementOut;
+            result.Add(res);
         }
         else if(this.Type_ == 3){
-            int result = this.InitialValue;
+            int res = this.InitialValue;
             for (int index = this.InitialFor; index < this.Maxium; index += this.Counter){
-                result += this.Increment;
-                result += this.SecondIncrement;
+                res += this.Increment;
+                res += this.SecondIncrement;
             }
-            return result;
+            result.Add(res); 
+            
         }
-        return 0; 
+        return result; 
     }
 
+    /* Generate the problem that the user are going to see on screen and save the values to
+    then get the result of the problem */
     public override string generateFor(string variableName, string printMessage){
         if (this.Type_ == 1){
             string question = "";
@@ -56,5 +60,15 @@ public class Level1: GeneratorFor{
         }
         return "";
     }
+
+    /* Check if the answer is right*/
+    public override bool getAnswer(string answer, List<int> correct, PopUp popUp, Timer timer){
+        int optionSelected = int.Parse(answer);
+        if (optionSelected == correct[0]){
+            return true;
+        }
+        return false;
+    }
+
     
 }

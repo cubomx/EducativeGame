@@ -1,31 +1,25 @@
-using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
+/* Base class to all the levels that are going to have the user the 
+opportunity to play */
 public abstract class GeneratorFor{
 
         private int initialValue;
-
         private int initialFor;
-
         private int maxium;
-        
         private int counter;
-
         private int result;
-
         private int increment;
-
         private int incrementOut;
-
         private int type_;
-
         public GeneratorFor(int type_){
             this.Type_ = type_;
         }
 
-        public abstract int getResult();
+        public abstract List<int> getResult();
 
         public abstract string generateFor(string variableName, string printMessage);
+
+        public abstract bool getAnswer(string answer, List<int> correct, PopUp popUp, Timer timer);
 
     public int InitialValue { get => initialValue; set => initialValue = value; }
     public int InitialFor { get => initialFor; set => initialFor = value; }
