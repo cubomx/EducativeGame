@@ -52,10 +52,11 @@ public class Level1: GeneratorFor{
             this.IncrementOut = (int) Mathf.Ceil(Random.Range(0f, 2f));
             this.Maxium = (int)Mathf.Ceil(Random.Range(3.0f, 10.0f));
             int ifClause = (int)Mathf.Ceil(Random.Range(0.0f, 7.0f));
-            question = "int " + variableName + " = " + this.InitialValue + ";\n";
-            question += "for (int i = 0; i < " + this.Maxium + " i+=" + this.Counter + "){\n";
-            question += "\t\t" + variableName + " += " + this.Increment + "\n";
-            question += "\t}\n" + variableName + " += " + this.IncrementOut + "\n" + printMessage;
+            question = "int i;\n";
+            question += "int " + variableName + " = " + this.InitialValue + ";\n";
+            question += "for (i = 0; i < " + this.Maxium + "; i += " + this.Counter + "){\n";
+            question += "\t\t" + variableName + " += " + this.Increment + ";\n";
+            question += "\t}\n" + variableName + " += " + this.IncrementOut + ";\n" + printMessage;
             return question;
         }
         return "";

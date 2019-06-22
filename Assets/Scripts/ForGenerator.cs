@@ -47,11 +47,13 @@ public class ForGenerator : MonoBehaviour
     and the answers that is from that level. */
     void generateLevel(){
         if (level == 1){
+            
             for_ = (GeneratorFor) new Level1(1);
         }
         else if (level == 2){
             for_ = (GeneratorFor) new Level2(1);
         }
+        
         text.text = for_.generateFor(this.variableName, this.printMessage);
         List<int> result = for_.getResult();
         answers = new Answers(result);
@@ -82,7 +84,7 @@ public class ForGenerator : MonoBehaviour
         popUp.showMessage(correct); // Let the user know if he/she got correct it.
         if (correct){
             score += this.GAIN_POINTS;
-            this._Score.text = "Score: " + score;
+            this._Score.text = score.ToString();
         }
         timer.timeTo = 0; 
     }
