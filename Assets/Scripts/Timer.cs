@@ -4,23 +4,27 @@ using UnityEngine.UI;
 
 public class Timer : MonoBehaviour
 {
-    public Text timer;
-    public int timeTo;
+    private Text clock;
+    private int timeTo;
     private int totalTime;
+
+    public Text Clock { get => clock; set => clock = value; }
+    public int TimeTo { get => timeTo; set => timeTo = value; }
+
     // Start is called before the first frame update
     void Start()
     {
-        totalTime = timeTo;
-        timer.text = this.timeTo.ToString();
+        this.totalTime = this.TimeTo;
+        this.Clock.text = this.TimeTo.ToString();
         StartCoroutine("CountDown");
     }
 
     // Update is called once per frame
     void Update()
     {
-        timer.text = this.timeTo.ToString();
-        if (timeTo == 0){ //Restarting the clock to the initial countdown
-            timeTo = totalTime;
+        this.Clock.text = this.TimeTo.ToString();
+        if (this.TimeTo == 0){ //Restarting the clock to the initial countdown
+            this.TimeTo = this.totalTime;
         }
     }
 
@@ -28,7 +32,7 @@ public class Timer : MonoBehaviour
         //Substracts one per second
         while (true){
             yield return new WaitForSeconds(1.0f);
-            timeTo--;
+            this.TimeTo--;
         }
     }
 }

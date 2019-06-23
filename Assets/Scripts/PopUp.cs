@@ -4,10 +4,12 @@ using UnityEngine.UI;
 
 
 public class PopUp: MonoBehaviour{
-    public Text message;
+    private Text message;
+
+    public Text Message { get => message; set => message = value; }
 
     void Start(){
-        message.enabled = false;
+        Message.enabled = false;
     }
 
     void Update(){
@@ -15,18 +17,21 @@ public class PopUp: MonoBehaviour{
     }
 
     // Showing the text corresponding to the answer of the user
-    public void showMessage(bool itsCorrect){
+    public void showMessage(bool itsCorrect, bool timeOut){
         if (itsCorrect){
-            message.text = "CORRECT";
+            this.Message.text = "CORRECT";
+        }
+        else if (timeOut){
+            this.Message.text = "LUCKY FOR THE NEXT ONE";
         }
         else{
-            message.text = "INCORRECT";
+            this.Message.text = "NICE TRY";
         }
-        message.enabled = true;
+        this.Message.enabled = true;
         Invoke("timeToDissapear", 2.0f);
     }
 
     void timeToDissapear(){
-        message.enabled = false;
+        this.Message.enabled = false;
     }
 }

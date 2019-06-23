@@ -5,7 +5,7 @@ using UnityEngine.UI;
 
 
 
-public class ForGenerator : MonoBehaviour
+public class GameController : MonoBehaviour
 {
     public int level;
     private string question;
@@ -21,23 +21,39 @@ public class ForGenerator : MonoBehaviour
     public List<Button> buttons;
     public  int GAIN_POINTS;
     private int score;
+    public GameObject bullet;
     private Answers answers;
     private PopUp popUp;
     private GeneratorFor for_;
+    private Shoot shoot;
+    private bool correct;
+    private bool timeOut;
     // Start is called before the first frame update
     void Start(){
         this.score = 0;
         generateLevel();
         popUp = gO.AddComponent<PopUp>();
-        popUp.message = message;
+        popUp.Message = message;
         timer = gO.AddComponent<Timer>();
-        timer.timer = time;
-        timer.timeTo = timeTo;
+        timer.Clock = time;
+        timer.TimeTo = timeTo;
+        shoot = gO.AddComponent<Shoot>();
+        shoot.Bullet = bullet;
+        shoot.OriginalPosition = bullet.GetComponent<RectTransform>().localPosition;
+        this.correct = false;
+        this.timeOut = true;
     }
 
     // Update is called once per frame
     void Update(){
-        if (timer.timeTo <= 0){
+        if (timer.TimeTo <= 0){
+            if (!this.correct && this.timeOut){
+                this.popUp.showMessage(false, true);
+                
+            }
+            else{
+                this.timeOut = true;
+            }
             generateLevel();
         }
         
@@ -80,13 +96,17 @@ public class ForGenerator : MonoBehaviour
 
     /* Get the button that was pressed and checks if the answer beloging to that button is the correct one */
     public void getAnswer(int num){
-        bool correct = for_.getAnswer(this.buttons[num-1].GetComponentInChildren<Text>().text, this.answers.Correct, popUp, timer);
-        popUp.showMessage(correct); // Let the user know if he/she got correct it.
+        this.shoot.Objective = this.buttons[num - 1];
+        this.shoot.IsShooting = true;
+        this.bullet.GetComponent<Image>().enabled = true;
+        this.correct = for_.getAnswer(this.buttons[num - 1].GetComponentInChildren<Text>().text, this.answers.Correct, popUp, timer);
+        this.timeOut = false;
+        popUp.showMessage(this.correct, this.timeOut); // Let the user know if he/she got correct it.
         if (correct){
             score += this.GAIN_POINTS;
             this._Score.text = score.ToString();
         }
-        timer.timeTo = 0; 
+        timer.TimeTo = 0; 
     }
     /* If the answer is a sequence of numbers, it concatenate the numbers. If not, only add the simple number.
      */
