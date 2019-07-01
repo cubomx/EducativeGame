@@ -50,9 +50,9 @@ public class Level2: GeneratorFor{
 
     /* Check if the answer is right*/
 
-    public override bool getAnswer(string answer, List<int> correct, PopUp popUp, Timer timer){
+    public override bool getAnswer(string answer, List<int> correct, PopUp popUp, Timer timer, int index){
         int optionSelected = int.Parse(answer);
-        if (optionSelected == correct[0]){
+        if (optionSelected == correct[index]){
             return true;
         }
         return false;

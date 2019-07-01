@@ -5,21 +5,20 @@ using UnityEngine.UI;
 
 public class Shoot : MonoBehaviour
 {
-   private float speed = 0.05f;
+    private float speed = 10.0f;
     private Vector3 originalPosition;
     private Button objective;
+    private int button;
     private bool isShooting;
-    private GameObject bullet;
-
     public Vector3 OriginalPosition { get => originalPosition; set => originalPosition = value; }
     public Button Objective { get => objective; set => objective = value; }
     public bool IsShooting { get => isShooting; set => isShooting = value; }
-    public GameObject Bullet { get => bullet; set => bullet = value; }
+    public int Button { get => button; set => button = value; }
 
     // Start is called before the first frame update
     void Start()
     {
-        this.Bullet.GetComponent<Image>().enabled = false;
+        gameObject.GetComponent<Image>().enabled = false;
         this.IsShooting = false;
     }
 
@@ -35,18 +34,11 @@ public class Shoot : MonoBehaviour
     and moves the bullet a proportion of this vector */
     void TraceVector (Button objective){
         RectTransform objectiveTrans = this.Objective.GetComponent<RectTransform>();
-        RectTransform bulletTrans = this.Bullet.GetComponent<RectTransform>();
-        if (!doesItOverlaps(objectiveTrans, bulletTrans)){
-            Vector3 collision = objectiveTrans.localPosition;
-            Vector3 origin = bulletTrans.localPosition;
-            Vector3 direction = subtract(origin, collision);
-            this.Bullet.GetComponent<RectTransform>().localPosition = addMove(origin, direction);
-        }
-        else{
-            this.IsShooting = false;
-            this.Bullet.GetComponent<RectTransform>().localPosition = this.OriginalPosition;
-            this.Bullet.GetComponent<Image>().enabled = false;
-        }
+        RectTransform bulletTrans = gameObject.GetComponent<RectTransform>();
+        Vector3 collision = objectiveTrans.localPosition;
+        Vector3 origin = bulletTrans.localPosition;
+        Vector3 direction = subtract(origin, collision);
+        gameObject.GetComponent<RectTransform>().localPosition = addMove(origin, direction);
     }
 
     /* Obtaining the director vector of the two points */
@@ -56,7 +48,8 @@ public class Shoot : MonoBehaviour
 
     /* Moving the bullet to where the button is moving */
     Vector3 addMove(Vector3 position, Vector3 direction){
-        return new Vector3(position.x + (direction.x * this.speed), position.y + (direction.y * this.speed), position.z);
+        float move = this.speed * Time.deltaTime;
+        return new Vector3(position.x + (direction.x * move), position.y + (direction.y * move), position.z);
     }
 
     /* Verifying if the bullet is already touching the button that the user clicked */
@@ -65,4 +58,14 @@ public class Shoot : MonoBehaviour
         Rect rect2 = new Rect(rectTrans2.localPosition.x, rectTrans2.localPosition.y, rectTrans2.rect.width, rectTrans2.rect.height);
         return rect1.Overlaps(rect2);
     }
+
+     private void OnTriggerEnter2D(Collider2D other){
+        if (other.gameObject.tag == ("btn" + this.Button.ToString())){
+            this.IsShooting = false;
+            gameObject.GetComponent<RectTransform>().localPosition = this.OriginalPosition;
+            gameObject.GetComponent<Image>().enabled = false;
+        }
+    }
+
+     
 }

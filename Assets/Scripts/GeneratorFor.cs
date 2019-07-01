@@ -10,6 +10,8 @@ public abstract class GeneratorFor{
         private int result;
         private int increment;
         private int incrementOut;
+
+        private int loops;
         private int type_;
         public GeneratorFor(int type_){
             this.Type_ = type_;
@@ -19,7 +21,7 @@ public abstract class GeneratorFor{
 
         public abstract string generateFor(string variableName, string printMessage);
 
-        public abstract bool getAnswer(string answer, List<int> correct, PopUp popUp, Timer timer);
+        public abstract bool getAnswer(string answer, List<int> correct, PopUp popUp, Timer timer, int index);
 
     public int InitialValue { get => initialValue; set => initialValue = value; }
     public int InitialFor { get => initialFor; set => initialFor = value; }
@@ -29,6 +31,7 @@ public abstract class GeneratorFor{
     public int Increment { get => increment; set => increment = value; }
     public int IncrementOut { get => incrementOut; set => incrementOut = value; }
     public int Type_ { get => type_; set => type_ = value; }
+    public int Loops { get => loops; set => loops = value; }
 }
 
 

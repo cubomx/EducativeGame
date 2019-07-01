@@ -15,6 +15,8 @@ public class Level1: GeneratorFor{
         if (this.Type_ == 1){
             int res = this.InitialValue;
             for (int index = this.InitialFor; index < this.Maxium; index += this.Counter){
+                result.Add(index);
+                result.Add(res);
                 res += this.Increment;
             }
             res += this.IncrementOut;
@@ -23,6 +25,8 @@ public class Level1: GeneratorFor{
         else if (this.Type_ == 2){
             int res = this.InitialValue;
             for (int index = this.InitialFor; index < this.Maxium; index += this.Counter){
+                result.Add(index);
+                result.Add(res);
                 res = 0;
                 res = res + this.Increment;
             }
@@ -32,6 +36,8 @@ public class Level1: GeneratorFor{
         else if(this.Type_ == 3){
             int res = this.InitialValue;
             for (int index = this.InitialFor; index < this.Maxium; index += this.Counter){
+                result.Add(index);
+                result.Add(res);
                 res += this.Increment;
                 res += this.SecondIncrement;
             }
@@ -46,15 +52,17 @@ public class Level1: GeneratorFor{
     public override string generateFor(string variableName, string printMessage){
         if (this.Type_ == 1){
             string question = "";
+            this.InitialFor = (int) Mathf.Ceil(Random.Range(0f, 4.0f));
+            this.Loops = (int) Mathf.Ceil(Random.Range(3.0f, 5.0f));
             this.Counter = (int) Mathf.Ceil(Random.Range(0f, 3f));
             this.InitialValue = (int)Mathf.Ceil(Random.Range(0f, 5f));
             this.Increment = (int)Mathf.Ceil(Random.Range(0f, 3f));
             this.IncrementOut = (int) Mathf.Ceil(Random.Range(0f, 2f));
-            this.Maxium = (int)Mathf.Ceil(Random.Range(3.0f, 10.0f));
+            this.Maxium = (this.Loops * this.Counter) + this.InitialFor + 1; 
             int ifClause = (int)Mathf.Ceil(Random.Range(0.0f, 7.0f));
             question = "int i;\n";
             question += "int " + variableName + " = " + this.InitialValue + ";\n";
-            question += "for (i = 0; i < " + this.Maxium + "; i += " + this.Counter + "){\n";
+            question += "for ( i = " + this.InitialFor + "; i < " + this.Maxium + "; i += " + this.Counter + " ){\n";
             question += "\t\t" + variableName + " += " + this.Increment + ";\n";
             question += "\t}\n" + variableName + " += " + this.IncrementOut + ";\n" + printMessage;
             return question;
@@ -63,9 +71,9 @@ public class Level1: GeneratorFor{
     }
 
     /* Check if the answer is right*/
-    public override bool getAnswer(string answer, List<int> correct, PopUp popUp, Timer timer){
+    public override bool getAnswer(string answer, List<int> correct, PopUp popUp, Timer timer, int index){
         int optionSelected = int.Parse(answer);
-        if (optionSelected == correct[0]){
+        if (optionSelected == correct[index]){
             return true;
         }
         return false;

@@ -20,26 +20,37 @@ public class Answers{
     private List<List<int>> getOtherOptions(){
         int random = (int) Mathf.Ceil(Random.Range(0.0f, MAX));
         List<List<int>> options = new List<List<int>>();
-        int randOption1 = (int) Mathf.Ceil(Random.Range(0.0f, this.Correct[0]+1));
-        int randOption2 = (int) Mathf.Ceil(Random.Range(0.0f, this.Correct[0]+1));
+        int randOption1 = (int) Mathf.Ceil(Random.Range(0.0f, 2.0f));
+        int randOption2 = (int) Mathf.Ceil(Random.Range(0.0f, 4.0f));
         
         for(int i = 0; i < 2; i++){
             options.Add(new List<int>());
         }
-        int size = this.Correct.Capacity/sizeof(int);
+        int size = this.Correct.Count;
         for(int index = 0; index < size; index++){
-            if (random <= 4 || this.correct[index] == 0){
-                options[0].Add(this.Correct[index] - randOption1);
+            if (random <= 4){
+                if (this.Correct[index] > randOption1){
+                    options[0].Add(this.Correct[index] - randOption1);
+                }
+                else{
+                    options[0].Add(this.Correct[index] + randOption1 - 1);
+                }
+                
                 options[1].Add(randOption2  + this.Correct[index]);
             }
-            else if (random <= 7){
+            else if (random <= 7 ){
                 options[0].Add(randOption1 + this.Correct[index]);
                 options[1].Add(randOption2 + this.Correct[index]);
             }
             else{
-                options[0].Add(this.Correct[index] - randOption1);
-                options[1].Add(this.Correct[index] - randOption2);
+                if (this.Correct[index] > randOption1){
+                    options[0].Add(this.Correct[index] - randOption1);
                 }
+                else{
+                    options[0].Add(this.Correct[index] + randOption1);
+                }
+                options[1].Add(this.Correct[index] + randOption2);
+            }
         }
         return options;
     }
