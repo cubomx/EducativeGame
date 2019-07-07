@@ -49,9 +49,11 @@ public class Level1: GeneratorFor{
 
     /* Generate the problem that the user are going to see on screen and save the values to
     then get the result of the problem */
-    public override string generateFor(string variableName, string printMessage){
+    public override string generateFor(string printMessage){
         if (this.Type_ == 1){
             string question = "";
+            this.VariableFor = this.getForVariable();
+            this.VariableName = this.getVariableName();
             this.InitialFor = (int) Mathf.Ceil(Random.Range(0f, 4.0f));
             this.Loops = (int) Mathf.Ceil(Random.Range(3.0f, 5.0f));
             this.Counter = (int) Mathf.Ceil(Random.Range(0f, 3f));
@@ -60,11 +62,12 @@ public class Level1: GeneratorFor{
             this.IncrementOut = (int) Mathf.Ceil(Random.Range(0f, 2f));
             this.Maxium = (this.Loops * this.Counter) + this.InitialFor + 1; 
             int ifClause = (int)Mathf.Ceil(Random.Range(0.0f, 7.0f));
-            question = "int i;\n";
-            question += "int " + variableName + " = " + this.InitialValue + ";\n";
-            question += "for ( i = " + this.InitialFor + "; i < " + this.Maxium + "; i += " + this.Counter + " ){\n";
-            question += "\t\t" + variableName + " += " + this.Increment + ";\n";
-            question += "\t}\n" + variableName + " += " + this.IncrementOut + ";\n" + printMessage;
+            question = "<color=black><color=magenta>int </color> <color=cyan>" + this.VariableFor + "</color>;\n";
+            question += "<color=magenta>int </color> <color=cyan>" + VariableName + "</color> = <color=red>" + this.InitialValue + "</color>;\n";
+            question += "<color=brown>for</color> ( <color=cyan>"+ this.VariableFor + "</color> = <color=red>" + this.InitialFor + "</color>; <color=cyan>" + this.VariableFor + 
+            "</color> < <color=red>" + this.Maxium + "</color>; <color=cyan>" + this.VariableFor +"</color> += <color=red>" + this.Counter + "</color> ){\n";
+            question += "\t\t<color=cyan>" + VariableName + "</color> += <color=red>" + this.Increment + "</color>;\n";
+            question += "\t}\n<color=cyan>" + VariableName + "</color> += <color=red>" + this.IncrementOut + "</color>;\n" + printMessage + " <color=cyan>" + this.VariableName + "</color>;</color>";
             return question;
         }
         return "";

@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
@@ -8,7 +9,6 @@ using UnityEngine.UI;
 public class GameController : MonoBehaviour
 {
     public int level;
-    public string variableName;
     public string printMessage;
     public Text text;
     public Text time;
@@ -22,6 +22,7 @@ public class GameController : MonoBehaviour
     private int score;
     public GameObject bullet;
     public Text question;
+    public GameObject initialMessage;
     private Answers answers;
     private PopUp popUp;
     private GeneratorFor for_;
@@ -31,8 +32,11 @@ public class GameController : MonoBehaviour
     private int index;
     private int lengthQuestions;
     private int loop;
+    private bool waiting;
+    private float timeWaitingUser = 15f;
     // Start is called before the first frame update
     void Start(){
+        waiting = false;
         this.index = 0;
         this.score = 0;
         generateLevel();
@@ -49,7 +53,18 @@ public class GameController : MonoBehaviour
 
     // Update is called once per frame
     void Update(){
-        if (timer.TimeTo <= 0){
+        if (waiting){
+            this.timeWaitingUser -= Time.deltaTime;
+            if (this.timeWaitingUser <= 0.0f){
+                this.timer.TimeTo = 16;
+                waiting = false;
+                this.timeWaitingUser = 15;
+                stopEverything(true);
+                startQuestion();
+            }
+        }
+        else{
+            if (timer.TimeTo <= 0){
             if (!this.correct && this.timeOut){
                 this.popUp.showMessage(false, true);
             }
@@ -57,6 +72,7 @@ public class GameController : MonoBehaviour
                 this.timeOut = true;
             }
             generateLevel();
+        }
         }
     }
 
@@ -70,15 +86,30 @@ public class GameController : MonoBehaviour
             for_ = (GeneratorFor) new Level2(1);
         }
         
-        text.text = for_.generateFor(this.variableName, this.printMessage);
+        text.text = for_.generateFor(this.printMessage);
         answers = new Answers(for_.getResult());
         this.loop = 1;
+        waiting = true;
+        stopEverything(false);
         this.lengthQuestions = this.answers.Correct.Count;
-        generateQuestion("i");
+    }
+
+    void startQuestion(){
+        generateQuestion(Char.ToString(this.for_.VariableFor));
+    }
+
+    void stopEverything(bool activate){
+        this.initialMessage.SetActive(!activate);
+        foreach (Button item in this.buttons)
+        {
+            item.gameObject.SetActive(activate);
+        }
+        this.question.gameObject.SetActive(activate);
     }
 
     void generateQuestion(string nameOfVariable){
-        int aleatoryOrder = (int) Mathf.Ceil(Random.Range(0.0f, buttons.Capacity));
+        this.timeTo = 0;
+        int aleatoryOrder = this.randomNumber(0, buttons.Count + 1);
         // Aleatory puts the different answers to the buttons
         getAnswersToButtons(aleatoryOrder);
         if (this.index + 1 == this.lengthQuestions){
@@ -118,6 +149,7 @@ public class GameController : MonoBehaviour
         this.timeOut = false;
         popUp.showMessage(this.correct, this.timeOut); // Let the user know if he/she got correct it.
         if (correct){
+            this.timer.TimeTo = 15;
             this.index++;
             score += this.GAIN_POINTS;
             this._Score.text = score.ToString();
@@ -125,17 +157,18 @@ public class GameController : MonoBehaviour
                 generateLevel();
                 this.index = 0;
             }
-            else if (this.index-1 > 0 && this.index-1 % 2 == 1){
+            else if (this.index-1 != 0 && this.index % 2 == 0){
                 this.loop++;
-                generateQuestion("i");
+                generateQuestion(Char.ToString(this.for_.VariableFor));
             }
             else{
-                generateQuestion(this.variableName);
+                generateQuestion(this.for_.VariableName);
             }
         }
         else{
             timer.TimeTo = 0; 
             this.index = 0;
+            this.loop = 0;
         }
         
     }
@@ -155,7 +188,12 @@ public class GameController : MonoBehaviour
                 }
             }
         }
-
         return answer;
     }
+
+    int randomNumber(int min, int max){
+        System.Random random = new System.Random();
+        return random.Next(min, max);
+    }
+
 }

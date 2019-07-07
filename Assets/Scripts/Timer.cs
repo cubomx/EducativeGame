@@ -7,13 +7,14 @@ public class Timer : MonoBehaviour
     private Text clock;
     private int timeTo;
     private int totalTime;
-
+    private int looped;
     public Text Clock { get => clock; set => clock = value; }
     public int TimeTo { get => timeTo; set => timeTo = value; }
 
     // Start is called before the first frame update
     void Start()
     {
+        this.looped = 0;
         this.totalTime = this.TimeTo;
         this.Clock.text = this.TimeTo.ToString();
         StartCoroutine("CountDown");
@@ -23,8 +24,14 @@ public class Timer : MonoBehaviour
     void Update()
     {
         this.Clock.text = this.TimeTo.ToString();
-        if (this.TimeTo == 0){ //Restarting the clock to the initial countdown
-            this.TimeTo = this.totalTime;
+        if (this.TimeTo <= 0){ //Restarting the clock to the initial countdown
+            if (this.looped > 0){
+                this.TimeTo = this.totalTime;
+                this.looped = 0;
+            }
+            else{
+                this.looped++;
+            }
         }
     }
 

@@ -26,22 +26,23 @@ public class Level2: GeneratorFor{
 
     /* Generate the problem that the user are going to see on screen and save the values to
     then get the result of the problem */
-    public override string generateFor(string variableName, string printMessage){
+    public override string generateFor(string printMessage){
         string question = "";
         this.Counter = (int) Mathf.Ceil(Random.Range(0f, 5f));
+        this.VariableName = this.getVariableName();
         this.InitialValue = (int)Mathf.Ceil(Random.Range(0f, 5f));
         this.Mod = 2;
         this.Maxium = (int)Mathf.Ceil(Random.Range(3.0f, 10.0f));
         int ifClause = (int)Mathf.Ceil(Random.Range(0.0f, 7.0f));
-        question = "int " + variableName + " = " + this.InitialValue + ";\n";
+        question = "int " + this.VariableName  + " = " + this.InitialValue + ";\n";
         question += "for (int i = 0; i < " + this.Maxium + " i+=" + this.Counter + "){\n";
-        question += "\t\t" + variableName + " += 1\n";
+        question += "\t\t" + this.VariableName + " += 1\n";
         if (ifClause >= 4){
             this.Mod = 3;
-            question += "\t\tif (i % 3 == 0){\n\t\t\t" + variableName + " =0\n\t\t}\n";
+            question += "\t\tif (i % 3 == 0){\n\t\t\t" + this.VariableName  + " =0\n\t\t}\n";
         }
         else{
-            question += "\t\tif (i % 2 == 0){\n\t\t\t" + variableName + "+=1\n\t\t}\n";
+            question += "\t\tif (i % 2 == 0){\n\t\t\t" + this.VariableName  + "+=1\n\t\t}\n";
         }
         question += "\t}\n" + printMessage;
         

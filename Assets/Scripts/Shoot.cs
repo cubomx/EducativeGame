@@ -53,12 +53,6 @@ public class Shoot : MonoBehaviour
     }
 
     /* Verifying if the bullet is already touching the button that the user clicked */
-    bool doesItOverlaps(RectTransform rectTrans1, RectTransform rectTrans2){
-        Rect rect1 = new Rect(rectTrans1.localPosition.x, rectTrans1.localPosition.y, rectTrans1.rect.width, rectTrans1.rect.height);
-        Rect rect2 = new Rect(rectTrans2.localPosition.x, rectTrans2.localPosition.y, rectTrans2.rect.width, rectTrans2.rect.height);
-        return rect1.Overlaps(rect2);
-    }
-
      private void OnTriggerEnter2D(Collider2D other){
         if (other.gameObject.tag == ("btn" + this.Button.ToString())){
             this.IsShooting = false;
