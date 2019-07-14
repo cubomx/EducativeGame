@@ -21,7 +21,7 @@ public class Timer : MonoBehaviour
     }
 
     // Update is called once per frame
-    void Update()
+    void FixedUpdate()
     {
         this.Clock.text = this.TimeTo.ToString();
         if (this.TimeTo <= 0){ //Restarting the clock to the initial countdown

@@ -23,6 +23,8 @@ public class GameController : MonoBehaviour
     public GameObject bullet;
     public Text question;
     public GameObject initialMessage;
+    public Button continueBtn;
+    public GameObject messageBox;
     private Answers answers;
     private PopUp popUp;
     private GeneratorFor for_;
@@ -42,6 +44,7 @@ public class GameController : MonoBehaviour
         generateLevel();
         popUp = gO.AddComponent<PopUp>();
         popUp.Message = message;
+        popUp.MessageBox = messageBox;
         timer = gO.AddComponent<Timer>();
         timer.Clock = time;
         timer.TimeTo = timeTo;
@@ -79,6 +82,7 @@ public class GameController : MonoBehaviour
     /* Depending on which level the user is, it gives the respective level with the question
     and the answers that is from that level. */
     void generateLevel(){
+        
         if (this.level == 1){
             for_ = (GeneratorFor) new Level1(1);
         }
@@ -88,6 +92,7 @@ public class GameController : MonoBehaviour
         
         text.text = for_.generateFor(this.printMessage);
         answers = new Answers(for_.getResult());
+        Debug.Log("Tamaño: " + this.answers.Correct.Count);
         this.loop = 1;
         waiting = true;
         stopEverything(false);
@@ -105,6 +110,7 @@ public class GameController : MonoBehaviour
             item.gameObject.SetActive(activate);
         }
         this.question.gameObject.SetActive(activate);
+        this.continueBtn.gameObject.SetActive(!activate);
     }
 
     void generateQuestion(string nameOfVariable){
@@ -113,7 +119,7 @@ public class GameController : MonoBehaviour
         // Aleatory puts the different answers to the buttons
         getAnswersToButtons(aleatoryOrder);
         if (this.index + 1 == this.lengthQuestions){
-            this.question.text = "Al finalizar el for, ¿valor de " + nameOfVariable + "?";
+            this.question.text = "Al finalizar el for, ¿valor de " + this.for_.VariableName + "?";
         }
         else{
             this.question.text = "Al entrar en la vuelta " + loop.ToString() + " ¿valor de " + nameOfVariable + "?";
@@ -196,4 +202,7 @@ public class GameController : MonoBehaviour
         return random.Next(min, max);
     }
 
+    public void continueToQuestion(){
+       this.timeWaitingUser = 0f;
+    }
 }

@@ -62,12 +62,12 @@ public class Level1: GeneratorFor{
             this.IncrementOut = (int) Mathf.Ceil(Random.Range(0f, 2f));
             this.Maxium = (this.Loops * this.Counter) + this.InitialFor + 1; 
             int ifClause = (int)Mathf.Ceil(Random.Range(0.0f, 7.0f));
-            question = "<color=black><color=magenta>int </color> <color=cyan>" + this.VariableFor + "</color>;\n";
-            question += "<color=magenta>int </color> <color=cyan>" + VariableName + "</color> = <color=red>" + this.InitialValue + "</color>;\n";
-            question += "<color=brown>for</color> ( <color=cyan>"+ this.VariableFor + "</color> = <color=red>" + this.InitialFor + "</color>; <color=cyan>" + this.VariableFor + 
-            "</color> < <color=red>" + this.Maxium + "</color>; <color=cyan>" + this.VariableFor +"</color> += <color=red>" + this.Counter + "</color> ){\n";
-            question += "\t\t<color=cyan>" + VariableName + "</color> += <color=red>" + this.Increment + "</color>;\n";
-            question += "\t}\n<color=cyan>" + VariableName + "</color> += <color=red>" + this.IncrementOut + "</color>;\n" + printMessage + " <color=cyan>" + this.VariableName + "</color>;</color>";
+            question = "<color=#eef3f0><color=#ff5733>int </color> <color=#04d1f1>" + this.VariableFor + "</color>;\n";
+            question += "<color=#ff5733>int </color> <color=#04d1f1>" + VariableName + "</color> = <color=#0ed657>" + this.InitialValue + "</color>;\n";
+            question += "<color=#ac4dd2>for</color> ( <color=#04d1f1>"+ this.VariableFor + "</color> = <color=#0ed657>" + this.InitialFor + "</color>; <color=#04d1f1>" + this.VariableFor + 
+            "</color> < <color=#0ed657>" + this.Maxium + "</color>; <color=#04d1f1>" + this.VariableFor +"</color> += <color=#0ed657>" + this.Counter + "</color> ){\n";
+            question += "\t\t<color=#04d1f1>" + VariableName + "</color> += <color=#0ed657>" + this.Increment + "</color>;\n";
+            question += "\t}\n<color=#04d1f1>" + VariableName + "</color> += <color=#0ed657>" + this.IncrementOut + "</color>;\n<color=#ac4dd2>" + printMessage + "</color> <color=#04d1f1>" + this.VariableName + "</color>;</color>";
             return question;
         }
         return "";

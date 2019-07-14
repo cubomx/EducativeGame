@@ -7,9 +7,13 @@ public class PopUp: MonoBehaviour{
     private Text message;
 
     public Text Message { get => message; set => message = value; }
+    public GameObject MessageBox { get => messageBox; set => messageBox = value; }
+
+    private GameObject messageBox;
 
     void Start(){
         Message.enabled = false;
+        MessageBox.SetActive(false);
     }
 
     void Update(){
@@ -27,11 +31,14 @@ public class PopUp: MonoBehaviour{
         else{
             this.Message.text = "NICE TRY";
         }
+        this.MessageBox.SetActive(true);
         this.Message.enabled = true;
+        
         Invoke("timeToDissapear", 2.0f);
     }
 
     void timeToDissapear(){
+        this.MessageBox.SetActive(false);
         this.Message.enabled = false;
     }
 }

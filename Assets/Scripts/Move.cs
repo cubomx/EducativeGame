@@ -5,6 +5,7 @@ using UnityEngine;
 public class Move : MonoBehaviour
 {
     public bool movingLeft;
+    public GameObject other;
     public Vector2 LIMITS_X;
     private float speed = 60f;
     // Start is called before the first frame update
@@ -26,6 +27,9 @@ public class Move : MonoBehaviour
         gameObject.GetComponent<RectTransform>().localPosition = new Vector3(position, transform.y, transform.z);
         if (position < this.LIMITS_X.x || position > this.LIMITS_X.y){
             this.movingLeft = !this.movingLeft;
+        }
+        if (other != null && !other.GetComponent<Shoot>().IsShooting){
+            other.GetComponent<RectTransform>().localPosition = new Vector3(position, transform.y, transform.z);
         }
     }
 }
