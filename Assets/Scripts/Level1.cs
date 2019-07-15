@@ -19,7 +19,6 @@ public class Level1: GeneratorFor{
                 result.Add(res);
                 res += this.Increment;
             }
-            res += this.IncrementOut;
             result.Add(res);
         }
         else if (this.Type_ == 2){
@@ -27,22 +26,10 @@ public class Level1: GeneratorFor{
             for (int index = this.InitialFor; index < this.Maxium; index += this.Counter){
                 result.Add(index);
                 result.Add(res);
-                res = 0;
-                res = res + this.Increment;
+                res = res - this.Increment;
             }
             res += this.IncrementOut;
             result.Add(res);
-        }
-        else if(this.Type_ == 3){
-            int res = this.InitialValue;
-            for (int index = this.InitialFor; index < this.Maxium; index += this.Counter){
-                result.Add(index);
-                result.Add(res);
-                res += this.Increment;
-                res += this.SecondIncrement;
-            }
-            result.Add(res); 
-            
         }
         return result; 
     }
@@ -50,27 +37,18 @@ public class Level1: GeneratorFor{
     /* Generate the problem that the user are going to see on screen and save the values to
     then get the result of the problem */
     public override string generateFor(string printMessage){
+        string question = "";
+        question = this.getMininumValues(printMessage);
         if (this.Type_ == 1){
-            string question = "";
-            this.VariableFor = this.getForVariable();
-            this.VariableName = this.getVariableName();
-            this.InitialFor = (int) Mathf.Ceil(Random.Range(0f, 4.0f));
-            this.Loops = (int) Mathf.Ceil(Random.Range(3.0f, 5.0f));
-            this.Counter = (int) Mathf.Ceil(Random.Range(0f, 3f));
-            this.InitialValue = (int)Mathf.Ceil(Random.Range(0f, 5f));
-            this.Increment = (int)Mathf.Ceil(Random.Range(0f, 3f));
-            this.IncrementOut = (int) Mathf.Ceil(Random.Range(0f, 2f));
-            this.Maxium = (this.Loops * this.Counter) + this.InitialFor + 1; 
-            int ifClause = (int)Mathf.Ceil(Random.Range(0.0f, 7.0f));
-            question = "<color=#eef3f0><color=#ff5733>int </color> <color=#04d1f1>" + this.VariableFor + "</color>;\n";
-            question += "<color=#ff5733>int </color> <color=#04d1f1>" + VariableName + "</color> = <color=#0ed657>" + this.InitialValue + "</color>;\n";
-            question += "<color=#ac4dd2>for</color> ( <color=#04d1f1>"+ this.VariableFor + "</color> = <color=#0ed657>" + this.InitialFor + "</color>; <color=#04d1f1>" + this.VariableFor + 
-            "</color> < <color=#0ed657>" + this.Maxium + "</color>; <color=#04d1f1>" + this.VariableFor +"</color> += <color=#0ed657>" + this.Counter + "</color> ){\n";
-            question += "\t\t<color=#04d1f1>" + VariableName + "</color> += <color=#0ed657>" + this.Increment + "</color>;\n";
-            question += "\t}\n<color=#04d1f1>" + VariableName + "</color> += <color=#0ed657>" + this.IncrementOut + "</color>;\n<color=#ac4dd2>" + printMessage + "</color> <color=#04d1f1>" + this.VariableName + "</color>;</color>";
-            return question;
+            question += "\t\t<color=#04d1f1>" + VariableName + "</color> += <color=#0ed657>" + this.Increment + "</color>;\n\t}\n";
         }
-        return "";
+        else if (this.Type_ == 2){
+            this.IncrementOut = (int) Mathf.Ceil(Random.Range(0f, 2f));
+            question += "\t\t<color=#04d1f1>" + VariableName + "</color> -= <color=#0ed657>" + this.Increment + "</color>;\n\t}\n";
+            question += "<color=#04d1f1>" + VariableName + "</color> += <color=#0ed657>" + this.IncrementOut + "</color>;\n";
+        }
+        question += "<color=#ac4dd2>" + printMessage + "</color> <color=#04d1f1>" + this.VariableName + "</color>;</color>"; // print message
+        return question;
     }
 
     /* Check if the answer is right*/

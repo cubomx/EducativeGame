@@ -25,6 +25,7 @@ public class GameController : MonoBehaviour
     public GameObject initialMessage;
     public Button continueBtn;
     public GameObject messageBox;
+    public Text levelInfo;
     private Answers answers;
     private PopUp popUp;
     private GeneratorFor for_;
@@ -84,12 +85,12 @@ public class GameController : MonoBehaviour
     void generateLevel(){
         
         if (this.level == 1){
-            for_ = (GeneratorFor) new Level1(1);
+            for_ = (GeneratorFor) new Level1(2);
         }
         else if (this.level == 2){
-            for_ = (GeneratorFor) new Level2(1);
+            for_ = (GeneratorFor) new Level2(2);
         }
-        
+        this.levelInfo.text = "Level " + this.level;
         text.text = for_.generateFor(this.printMessage);
         answers = new Answers(for_.getResult());
         Debug.Log("Tamaño: " + this.answers.Correct.Count);
@@ -183,16 +184,8 @@ public class GameController : MonoBehaviour
     string writeAnswertToButton(List<int> numbers){
         string answer = "";
         int size = numbers.Count;
-        if (this.level == 1){
+        if (this.level <= 2){
             answer += numbers[this.index].ToString();
-        }
-        else if (this.level == 2){
-            for (int index = 0; index < size; index++){
-                answer += numbers[index];
-                if (index+1 <= size){
-                    answer += " ";
-                }
-            }
         }
         return answer;
     }

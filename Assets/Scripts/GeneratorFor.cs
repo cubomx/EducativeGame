@@ -40,6 +40,22 @@ public abstract class GeneratorFor{
 
         public abstract string generateFor(string printMessage);
 
+        public string getMininumValues(string message){
+            this.VariableFor = this.getForVariable();
+            this.VariableName = this.getVariableName();
+            this.InitialFor = (int) Mathf.Ceil(Random.Range(0f, 4.0f));
+            this.Loops = (int) Mathf.Ceil(Random.Range(3.0f, 5.0f));
+            this.Counter = (int) Mathf.Ceil(Random.Range(0f, 3f));
+            this.InitialValue = (int)Mathf.Ceil(Random.Range(0f, 5f));
+            this.Increment = (int)Mathf.Ceil(Random.Range(0f, 3f));
+            this.Maxium = (this.Loops * this.Counter) + this.InitialFor + 1;
+            message = "<color=#eef3f0><color=#ff5733>int </color> <color=#04d1f1>" + this.VariableFor + "</color>;\n";
+            message += "<color=#ff5733>int </color> <color=#04d1f1>" + VariableName + "</color> = <color=#0ed657>" + this.InitialValue + "</color>;\n";
+            message += "<color=#ac4dd2>for</color> ( <color=#04d1f1>"+ this.VariableFor + "</color> = <color=#0ed657>" + this.InitialFor + "</color>; <color=#04d1f1>" + this.VariableFor + 
+                "</color> < <color=#0ed657>" + this.Maxium + "</color>; <color=#04d1f1>" + this.VariableFor +"</color> += <color=#0ed657>" + this.Counter + "</color> ){\n";
+            return message;
+        }
+
         public abstract bool getAnswer(string answer, List<int> correct, PopUp popUp, Timer timer, int index);
 
     public int InitialValue { get => initialValue; set => initialValue = value; }

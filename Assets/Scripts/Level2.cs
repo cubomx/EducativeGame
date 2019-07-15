@@ -2,25 +2,37 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 public class Level2: GeneratorFor{
-    private int mod;
+    private int secondIncrementInside;
 
-    public int Mod { get => mod; set => mod = value; }
+    public int SecondIncrementInside { get => secondIncrementInside; set => secondIncrementInside = value; }
 
     public Level2(int type_) : base(type_){
-        this.Mod = mod;
     }
 
     /* Get the result of the for given to the user */
     public override List<int> getResult(){
         List<int> result = new List<int>();
-        int res = this.InitialValue;
-        for (int index = this.InitialFor; index < this.Maxium; index +=this.Counter){
-            res++;
-            if (index % this.Mod == 0){
-                res = 0;
+        if (this.Type_ == 1){
+            int res = this.InitialValue;
+            for (int index = this.InitialFor; index < this.Maxium; index += this.Counter){
+                result.Add(index);
+                result.Add(res);
+                res += this.Increment;
+                res += this.SecondIncrementInside;
             }
+            result.Add(res);
         }
-        result.Add(res);
+        else if (this.Type_ == 2){
+            int res = this.InitialValue;
+            for (int index = this.InitialFor; index < this.Maxium; index += this.Counter){
+                result.Add(index);
+                result.Add(res);
+                res = 0;
+                res = res + this.Increment;
+            }
+            res += this.IncrementOut;
+            result.Add(res);
+        }
         return result; 
     }
 
@@ -28,23 +40,19 @@ public class Level2: GeneratorFor{
     then get the result of the problem */
     public override string generateFor(string printMessage){
         string question = "";
-        this.Counter = (int) Mathf.Ceil(Random.Range(0f, 5f));
-        this.VariableName = this.getVariableName();
-        this.InitialValue = (int)Mathf.Ceil(Random.Range(0f, 5f));
-        this.Mod = 2;
-        this.Maxium = (int)Mathf.Ceil(Random.Range(3.0f, 10.0f));
-        int ifClause = (int)Mathf.Ceil(Random.Range(0.0f, 7.0f));
-        question = "int " + this.VariableName  + " = " + this.InitialValue + ";\n";
-        question += "for (int i = 0; i < " + this.Maxium + " i+=" + this.Counter + "){\n";
-        question += "\t\t" + this.VariableName + " += 1\n";
-        if (ifClause >= 4){
-            this.Mod = 3;
-            question += "\t\tif (i % 3 == 0){\n\t\t\t" + this.VariableName  + " =0\n\t\t}\n";
+        question = this.getMininumValues(printMessage);
+        
+        if (this.Type_ == 1){
+            this.SecondIncrementInside = (int)Mathf.Ceil(Random.Range(0f, 3f));
+            question += "\t\t<color=#04d1f1>" + VariableName + "</color> += <color=#0ed657>" + this.Increment + "</color>;\n";
+            question += "\t\t<color=#04d1f1>" + VariableName + "</color> += <color=#0ed657>" + this.SecondIncrementInside + "</color>;\n";
         }
-        else{
-            question += "\t\tif (i % 2 == 0){\n\t\t\t" + this.VariableName  + "+=1\n\t\t}\n";
+        if (this.Type_ == 2){
+            question += "\t\t<color=#04d1f1>" + VariableName + "</color> = <color=#0ed657> 0 </color>;\n";
+            question += "\t\t<color=#04d1f1>" + VariableName + "</color> += <color=#0ed657>" + this.Increment + "</color>;\n";
         }
-        question += "\t}\n" + printMessage;
+        question += "\t}\n";
+        question += "<color=#ac4dd2>" + printMessage + "</color> <color=#04d1f1>" + this.VariableName + "</color>;</color>"; // print message
         
         return question;
     }

@@ -43,12 +43,7 @@ public class Answers{
                 options[1].Add(randOption2 + this.Correct[index]);
             }
             else{
-                if (this.Correct[index] > randOption1){
-                    options[0].Add(this.Correct[index] - randOption1);
-                }
-                else{
-                    options[0].Add(this.Correct[index] + randOption1);
-                }
+                options[0].Add(this.Correct[index] - randOption1);
                 options[1].Add(this.Correct[index] + randOption2);
             }
         }
