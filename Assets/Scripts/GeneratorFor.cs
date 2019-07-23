@@ -4,7 +4,6 @@ using UnityEngine;
 /* Base class to all the levels that are going to have the user the 
 opportunity to play */
 public abstract class GeneratorFor{
-
         private int initialValue;
         private int initialFor;
         private int maxium;
@@ -16,14 +15,13 @@ public abstract class GeneratorFor{
         private string variableName;
         private const int MAX = 122;
         private const int MIN = 97;
-
         private List<string> options = new List<string>(new string []{"index", "valor", "suma", "contar"});
-
-
         private int loops;
         private int type_;
+        private bool shortFor;
         public GeneratorFor(int type_){
             this.Type_ = type_;
+            this.ShortFor = false;
         }
 
         public char getForVariable(){
@@ -52,11 +50,17 @@ public abstract class GeneratorFor{
             message = "<color=#eef3f0><color=#ff5733>int </color> <color=#04d1f1>" + this.VariableFor + "</color>;\n";
             message += "<color=#ff5733>int </color> <color=#04d1f1>" + VariableName + "</color> = <color=#0ed657>" + this.InitialValue + "</color>;\n";
             message += "<color=#ac4dd2>for</color> ( <color=#04d1f1>"+ this.VariableFor + "</color> = <color=#0ed657>" + this.InitialFor + "</color>; <color=#04d1f1>" + this.VariableFor + 
-                "</color> < <color=#0ed657>" + this.Maxium + "</color>; <color=#04d1f1>" + this.VariableFor +"</color> += <color=#0ed657>" + this.Counter + "</color> ){\n";
+                "</color> < <color=#0ed657>" + this.Maxium + "</color>; <color=#04d1f1>" + this.VariableFor +"</color> += <color=#0ed657>" + this.Counter + "</color> )";
             return message;
         }
 
-        public abstract bool getAnswer(string answer, List<int> correct, PopUp popUp, Timer timer, int index);
+        public bool getAnswer(string answer, List<int> correct, PopUp popUp, Timer timer, int index){
+            int optionSelected = int.Parse(answer);
+            if (optionSelected == correct[index]){
+                return true;
+            }
+            return false;
+        }
 
     public int InitialValue { get => initialValue; set => initialValue = value; }
     public int InitialFor { get => initialFor; set => initialFor = value; }
@@ -70,7 +74,5 @@ public abstract class GeneratorFor{
     public char VariableFor { get => variableFor; set => variableFor = value; }
     public List<string> Options { get => options; set => options = value; }
     public string VariableName { get => variableName; set => variableName = value; }
+    public bool ShortFor { get => shortFor; set => shortFor = value; }
 }
-
-
-

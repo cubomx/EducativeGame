@@ -25,8 +25,11 @@ public class Move : MonoBehaviour
         position += moveInX*speed*Time.deltaTime;
         
         gameObject.GetComponent<RectTransform>().localPosition = new Vector3(position, transform.y, transform.z);
-        if (position < this.LIMITS_X.x || position > this.LIMITS_X.y){
-            this.movingLeft = !this.movingLeft;
+        if (position < this.LIMITS_X.x){
+            this.movingLeft = false;
+        }
+        else if (position > this.LIMITS_X.y){
+            this.movingLeft = true;
         }
         if (other != null && !other.GetComponent<Shoot>().IsShooting){
             other.GetComponent<RectTransform>().localPosition = new Vector3(position, transform.y, transform.z);

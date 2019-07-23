@@ -8,7 +8,8 @@ using UnityEngine.UI;
 
 public class GameController : MonoBehaviour
 {
-    public int level;
+    private int level = 1;
+    private int sublevel = 2;
     public string printMessage;
     public Text text;
     public Text time;
@@ -37,12 +38,15 @@ public class GameController : MonoBehaviour
     private int loop;
     private bool waiting;
     private float timeWaitingUser = 15f;
+    private int correctAnswers;
+    private int incorrectAnswers;
+    
     // Start is called before the first frame update
     void Start(){
         waiting = false;
         this.index = 0;
         this.score = 0;
-        generateLevel();
+        
         popUp = gO.AddComponent<PopUp>();
         popUp.Message = message;
         popUp.MessageBox = messageBox;
@@ -53,6 +57,9 @@ public class GameController : MonoBehaviour
         this.shoot.OriginalPosition = bullet.GetComponent<RectTransform>().localPosition;
         this.correct = false;
         this.timeOut = true;
+        this.correctAnswers = 4;
+        this.incorrectAnswers = 0;
+        generateLevel();
     }
 
     // Update is called once per frame
@@ -69,31 +76,34 @@ public class GameController : MonoBehaviour
         }
         else{
             if (timer.TimeTo <= 0){
-            if (!this.correct && this.timeOut){
-                this.popUp.showMessage(false, true);
+                if (!this.correct && this.timeOut){
+                    this.popUp.showMessage(false, true);
+                }
+                else{
+                    this.timeOut = true;
+                }
+                generateLevel();
             }
-            else{
-                this.timeOut = true;
-            }
-            generateLevel();
-        }
         }
     }
 
     /* Depending on which level the user is, it gives the respective level with the question
     and the answers that is from that level. */
     void generateLevel(){
-        
+        this.shoot.IsShooting = false;
         if (this.level == 1){
-            for_ = (GeneratorFor) new Level1(2);
+            for_ = (GeneratorFor) new Level1(this.sublevel);
         }
         else if (this.level == 2){
-            for_ = (GeneratorFor) new Level2(2);
+            for_ = (GeneratorFor) new Level2(this.sublevel);
         }
+        else if (this.level == 3){
+            for_ = (GeneratorFor) new Level3(this.sublevel);
+        }
+        Debug.Log("Sublevel: " +  this.sublevel + "\nLevel: " + this.level);
         this.levelInfo.text = "Level " + this.level;
         text.text = for_.generateFor(this.printMessage);
         answers = new Answers(for_.getResult());
-        Debug.Log("Tamaño: " + this.answers.Correct.Count);
         this.loop = 1;
         waiting = true;
         stopEverything(false);
@@ -161,10 +171,12 @@ public class GameController : MonoBehaviour
             score += this.GAIN_POINTS;
             this._Score.text = score.ToString();
             if (this.index == this.lengthQuestions){
+                this.correctAnswers++;
+                changeLevel();
                 generateLevel();
                 this.index = 0;
             }
-            else if (this.index-1 != 0 && this.index % 2 == 0){
+            else if (this.index-1 != 0 && this.index % 2 == 0 || this.for_.ShortFor){
                 this.loop++;
                 generateQuestion(Char.ToString(this.for_.VariableFor));
             }
@@ -176,6 +188,7 @@ public class GameController : MonoBehaviour
             timer.TimeTo = 0; 
             this.index = 0;
             this.loop = 0;
+            this.incorrectAnswers++;
         }
         
     }
@@ -183,10 +196,7 @@ public class GameController : MonoBehaviour
      */
     string writeAnswertToButton(List<int> numbers){
         string answer = "";
-        int size = numbers.Count;
-        if (this.level <= 2){
-            answer += numbers[this.index].ToString();
-        }
+        answer += numbers[this.index].ToString();
         return answer;
     }
 
@@ -197,5 +207,23 @@ public class GameController : MonoBehaviour
 
     public void continueToQuestion(){
        this.timeWaitingUser = 0f;
+    }
+
+    void changeLevel (){
+        if (correctAnswers > 3){
+            sublevel++;
+            if (sublevel >= 3){
+                if (for_.GetType() == typeof(Level1)){
+                    sublevel = 1;
+                    level = 2;
+                }
+                else if (for_.GetType() == typeof(Level2)){
+                    sublevel = 1;
+                    level = 3;
+                }     
+            }
+            correctAnswers = 0;
+            incorrectAnswers = 0;
+        }
     }
 }

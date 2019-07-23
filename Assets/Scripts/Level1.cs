@@ -12,8 +12,8 @@ public class Level1: GeneratorFor{
     /* Get the result of case that was selected aleatory */
     public override List<int> getResult(){
         List<int> result = new List<int>();
+        int res = this.InitialValue;
         if (this.Type_ == 1){
-            int res = this.InitialValue;
             for (int index = this.InitialFor; index < this.Maxium; index += this.Counter){
                 result.Add(index);
                 result.Add(res);
@@ -22,7 +22,6 @@ public class Level1: GeneratorFor{
             result.Add(res);
         }
         else if (this.Type_ == 2){
-            int res = this.InitialValue;
             for (int index = this.InitialFor; index < this.Maxium; index += this.Counter){
                 result.Add(index);
                 result.Add(res);
@@ -38,7 +37,7 @@ public class Level1: GeneratorFor{
     then get the result of the problem */
     public override string generateFor(string printMessage){
         string question = "";
-        question = this.getMininumValues(printMessage);
+        question = this.getMininumValues(printMessage) + "{\n";
         if (this.Type_ == 1){
             question += "\t\t<color=#04d1f1>" + VariableName + "</color> += <color=#0ed657>" + this.Increment + "</color>;\n\t}\n";
         }
@@ -49,16 +48,5 @@ public class Level1: GeneratorFor{
         }
         question += "<color=#ac4dd2>" + printMessage + "</color> <color=#04d1f1>" + this.VariableName + "</color>;</color>"; // print message
         return question;
-    }
-
-    /* Check if the answer is right*/
-    public override bool getAnswer(string answer, List<int> correct, PopUp popUp, Timer timer, int index){
-        int optionSelected = int.Parse(answer);
-        if (optionSelected == correct[index]){
-            return true;
-        }
-        return false;
-    }
-
-    
+    }    
 }
