@@ -52,6 +52,7 @@ public abstract class GeneratorFor{
             message += "<color=#ac4dd2>for</color> ( <color=#04d1f1>"+ this.VariableFor + "</color> = <color=#0ed657>" + this.InitialFor + "</color>; <color=#04d1f1>" + this.VariableFor + 
                 "</color> < <color=#0ed657>" + this.Maxium + "</color>; <color=#04d1f1>" + this.VariableFor +"</color> += <color=#0ed657>" + this.Counter + "</color> )";
             return message;
+            
         }
 
         public bool getAnswer(string answer, List<int> correct, PopUp popUp, Timer timer, int index){

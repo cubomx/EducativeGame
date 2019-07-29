@@ -8,8 +8,8 @@ using UnityEngine.UI;
 
 public class GameController : MonoBehaviour
 {
-    private int level = 1;
-    private int sublevel = 2;
+    private int level = 3;
+    private int sublevel = 1;
     public string printMessage;
     public Text text;
     public Text time;
@@ -27,6 +27,7 @@ public class GameController : MonoBehaviour
     public Button continueBtn;
     public GameObject messageBox;
     public Text levelInfo;
+    public Text previousAnswers;
     private Answers answers;
     private PopUp popUp;
     private GeneratorFor for_;
@@ -76,11 +77,9 @@ public class GameController : MonoBehaviour
         }
         else{
             if (timer.TimeTo <= 0){
-                if (!this.correct && this.timeOut){
+                //restartValues();
+                if (this.timeOut){
                     this.popUp.showMessage(false, true);
-                }
-                else{
-                    this.timeOut = true;
                 }
                 generateLevel();
             }
@@ -100,7 +99,6 @@ public class GameController : MonoBehaviour
         else if (this.level == 3){
             for_ = (GeneratorFor) new Level3(this.sublevel);
         }
-        Debug.Log("Sublevel: " +  this.sublevel + "\nLevel: " + this.level);
         this.levelInfo.text = "Level " + this.level;
         text.text = for_.generateFor(this.printMessage);
         answers = new Answers(for_.getResult());
@@ -125,6 +123,7 @@ public class GameController : MonoBehaviour
     }
 
     void generateQuestion(string nameOfVariable){
+        this.timeOut = true;
         this.timeTo = 0;
         int aleatoryOrder = this.randomNumber(0, buttons.Count + 1);
         // Aleatory puts the different answers to the buttons
@@ -168,6 +167,7 @@ public class GameController : MonoBehaviour
         if (correct){
             this.timer.TimeTo = 15;
             this.index++;
+            showListOfCorrectAnswers();
             score += this.GAIN_POINTS;
             this._Score.text = score.ToString();
             if (this.index == this.lengthQuestions){
@@ -185,10 +185,10 @@ public class GameController : MonoBehaviour
             }
         }
         else{
-            timer.TimeTo = 0; 
-            this.index = 0;
-            this.loop = 0;
+            restartValues();
             this.incorrectAnswers++;
+            timer.TimeTo = 0; 
+            showListOfCorrectAnswers();
         }
         
     }
@@ -225,5 +225,28 @@ public class GameController : MonoBehaviour
             correctAnswers = 0;
             incorrectAnswers = 0;
         }
+    }
+
+    void showListOfCorrectAnswers(){
+        if (this.index > 0 && this.index < this.lengthQuestions){
+            string forSerie = Char.ToString(this.for_.VariableFor) + " ", variableSerie = this.for_.VariableName + " ";
+            for (int i = 0; i < this.index; i++){
+                if (i % 2 == 0){
+                    forSerie += this.answers.Correct[i] + " ";
+                }
+                else{
+                    variableSerie += this.answers.Correct[i] + " ";
+                }
+            }
+            this.previousAnswers.text = forSerie + "\n" + variableSerie;
+        }
+        else {
+            this.previousAnswers.text = "";
+        }
+    }
+
+    void restartValues(){
+        this.index = 0;
+        this.loop = 0;
     }
 }
